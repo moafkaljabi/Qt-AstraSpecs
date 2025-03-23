@@ -1,5 +1,0 @@
-module AstraSpecs
-typeinfo appAstraSpecs.qmltypes
-prefer :/qt/qml/AstraSpecs/
-Main 1.0 Main.qml
-
