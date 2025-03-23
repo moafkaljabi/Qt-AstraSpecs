@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/">
+    <file alias="/qt/qml/AstraSpecs">/home/moafk/Qt/AstraSpecs/build/Desktop_Qt_6_8_0-Debug/AstraSpecs</file>
+
+  </qresource>
+</RCC>

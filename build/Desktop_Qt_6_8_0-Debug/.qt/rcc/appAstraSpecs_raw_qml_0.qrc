@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/qt/qml/AstraSpecs/">
+    <file alias="Main.qml">/home/moafk/Qt/AstraSpecs/Main.qml</file>
+  </qresource>
+</RCC>
+

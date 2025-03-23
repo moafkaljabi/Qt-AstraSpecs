@@ -1,0 +1,14 @@
+-rootPath
+/home/moafk/Qt/AstraSpecs
+-cmake-output
+-output-file
+/home/moafk/Qt/AstraSpecs/build/Desktop_Qt_6_8_0-Debug/.qt/qml_imports/appAstraSpecs_conf.cmake
+-importPath
+/home/moafk/Qt/AstraSpecs/build/Desktop_Qt_6_8_0-Debug/AstraSpecs
+-importPath
+/home/moafk/Qt/AstraSpecs/build/Desktop_Qt_6_8_0-Debug
+-importPath
+/home/moafk/Qt/6.8.0/gcc_64/qml
+-qrcFiles
+/home/moafk/Qt/AstraSpecs/build/Desktop_Qt_6_8_0-Debug/.qt/rcc/qmake_AstraSpecs.qrc
+/home/moafk/Qt/AstraSpecs/build/Desktop_Qt_6_8_0-Debug/.qt/rcc/appAstraSpecs_raw_qml_0.qrc
