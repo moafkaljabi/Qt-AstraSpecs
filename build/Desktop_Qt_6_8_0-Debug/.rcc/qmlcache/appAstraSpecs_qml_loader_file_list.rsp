@@ -1,0 +1,5 @@
+--resource
+/home/moafk/Qt/AstraSpecs/build/Desktop_Qt_6_8_0-Debug/.qt/rcc/qmake_AstraSpecs.qrc
+--resource
+/home/moafk/Qt/AstraSpecs/build/Desktop_Qt_6_8_0-Debug/.qt/rcc/appAstraSpecs_raw_qml_0.qrc
+/qt/qml/AstraSpecs/Main.qml
