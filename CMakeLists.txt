@@ -17,6 +17,16 @@ qt_add_qml_module(appAstraSpecs
     VERSION 1.0
     QML_FILES
         Main.qml
+        SOURCES network/tcpserver.h network/tcpserver.cpp
+        SOURCES network/httpserver.h network/httpserver.cpp
+        SOURCES uart/uartmanager.h uart/uartmanager.cpp
+        SOURCES json/jsonreceiver.h json/jsonreceiver.cpp
+        SOURCES json/jsonsender.h json/jsonsender.cpp
+        SOURCES controllers/tcpcontroller.h controllers/tcpcontroller.cpp
+        SOURCES controllers/uartcontroller.h controllers/uartcontroller.cpp
+        SOURCES controllers/jsoncontroller.h controllers/jsoncontroller.cpp
+        QML_FILES components/TopBar/TopBar.qml
+        QML_FILES components/BottomBar/BottomBar.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
