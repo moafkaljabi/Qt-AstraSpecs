@@ -4,48 +4,64 @@ project(AstraSpecs VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Quick SerialPort)
-# find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick SerialPort)
+# Find Qt6 and required components (add Core and Network)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Core Quick SerialPort Network)
 
+# Find pkg-config for PostgreSQL (pqxx)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(PQXX REQUIRED libpqxx)
+
+# Standard Qt project setup
 qt_standard_project_setup(REQUIRES 6.5)
 
+# Define the executable
 qt_add_executable(appAstraSpecs
     main.cpp
 )
 
+# Define the QML module
 qt_add_qml_module(appAstraSpecs
     URI AstraSpecs
     VERSION 1.0
     QML_FILES
         Main.qml
-        SOURCES network/tcpserver.h network/tcpserver.cpp
-        SOURCES network/httpserver.h network/httpserver.cpp
-        SOURCES uart/uartmanager.h uart/uartmanager.cpp
-        SOURCES json/jsonreceiver.h json/jsonreceiver.cpp
-        SOURCES json/jsonsender.h json/jsonsender.cpp
-        SOURCES controllers/tcpcontroller.h controllers/tcpcontroller.cpp
-        SOURCES controllers/uartcontroller.h controllers/uartcontroller.cpp
-        SOURCES controllers/jsoncontroller.h controllers/jsoncontroller.cpp
+    SOURCES
+        network/tcpserver.h network/tcpserver.cpp
+        network/httpserver.h network/httpserver.cpp
+        uart/uartmanager.h uart/uartmanager.cpp
+        json/jsonreceiver.h json/jsonreceiver.cpp
+        json/jsonsender.h json/jsonsender.cpp
+        controllers/tcpcontroller.h controllers/tcpcontroller.cpp
+        controllers/uartcontroller.h controllers/uartcontroller.cpp
+        controllers/jsoncontroller.h controllers/jsoncontroller.cpp
         QML_FILES components/TopBar/TopBar.qml
         QML_FILES components/BottomBar/BottomBar.qml
+        QML_FILES components/body/body.qml
 )
 
-# Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
-# If you are developing for iOS or macOS you should consider setting an
-# explicit, fixed bundle identifier manually though.
+# Set target properties
 set_target_properties(appAstraSpecs PROPERTIES
-#    MACOSX_BUNDLE_GUI_IDENTIFIER com.example.appAstraSpecs
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
 
-target_link_libraries(appAstraSpecs
-    PRIVATE Qt6::Quick
-            Qt6::SerialPort
+# Link libraries to your application
+target_include_directories(appAstraSpecs
+    PRIVATE ${PQXX_INCLUDE_DIRS}  # Add pqxx include directories
 )
 
+target_link_libraries(appAstraSpecs
+    PRIVATE Qt6::Core           # Link Core module for basic Qt functionality
+            Qt6::Quick          # Link Quick module for QML
+            Qt6::SerialPort     # Link SerialPort module
+            Qt6::Network        # Link Network module (for QTcpServer)
+            pqxx               # Link pqxx library for PostgreSQL support
+            ${PQXX_LIBRARIES}   # Add pqxx libraries from pkg-config
+)
+
+# Installation settings
 include(GNUInstallDirs)
 install(TARGETS appAstraSpecs
     BUNDLE DESTINATION .

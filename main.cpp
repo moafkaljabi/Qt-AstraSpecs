@@ -1,28 +1,36 @@
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
-#include "controllers/tcpcontroller.h"
-#include <QJsonDocument>
+#include <QCoreApplication>
+#include <QQuickView>
+#include <QQmlContext>
+#include <QCommandLineParser>
+#include <QCommandLineOption>
+#include "network/tcpserver.h"
 
-int main(int argc, char *argv[])
-{
-    QGuiApplication app(argc, argv);
-    QQmlApplicationEngine engine;
+int main(int argc, char *argv[]) {
 
-    // Create TcpController instance
-    TcpController tcpController("127.0.0.1", 12345);
+    QCoreApplication a(argc, argv);
 
-    // Connect signals to lambda functions for debugging
-    QObject::connect(&tcpController, &TcpController::connected, []() {
-        qDebug() << "Connected to server!";
-    });
+    // Set up command line options
+    QCommandLineParser parser;
+    parser.setApplicationDescription("TCP Server Example");
+    parser.addHelpOption();
 
-    QObject::connect(&tcpController, &TcpController::dataReceived, [](const QJsonObject& data) {
-        qDebug() << "Received data from server:" << QJsonDocument(data).toJson();
-    });
+    // Define a port option
+    QCommandLineOption portOption(QStringList() << "p" << "port", "Port to run the server on.", "port", "12345");
+    parser.addOption(portOption);
+    parser.process(a);
 
-    // Start connection
-    tcpController.connectToServer();
+    // Get the port number from the command line argument (default to 12345 if not provided)
+    quint16 port = parser.value(portOption).toUInt();
 
-    engine.loadFromModule("AstraSpecs", "Main");
-    return app.exec();
+    // Initialize the TcpServer on the specified port
+    TcpServer server(port);
+
+    // Create the QML view
+    QQuickView view;
+    view.rootContext()->setContextProperty("tcpServer", &server); // Expose TcpServer instance to QML
+    view.setSource(QUrl::fromLocalFile("qml/main.qml"));
+    view.show();
+
+    // Start the event loop
+    return a.exec();
 }
