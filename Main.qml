@@ -1,6 +1,6 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-
+import QtQuick
+import QtQuick.Controls
+import AstraSpecs 1.0  // ✅ Import the module where TcpServer is registered
 
 ApplicationWindow {
     visible: true
@@ -8,24 +8,23 @@ ApplicationWindow {
     height: 480
     title: "Server Control"
 
-    // Button to start the server
-    Button {
-        text: "Start Server"
-        anchors.centerIn: parent
-        onClicked: {
-            tcpServer.startServer(); // Call the startServer() method
-
-        }
+    // ✅ Create an instance of TcpServer
+    TcpServer {
+        id: tcpServer
     }
 
-    // Button to stop the server
-    Button {
-        text: "Stop Server"
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.margins: 20
-        onClicked: {
-            tcpServer.stopServer(); // Call the stopServer() method
+    Column {
+        anchors.centerIn: parent
+        spacing: 20
+
+        Button {
+            text: "Start Server"
+            onClicked: tcpServer.startServer();
+        }
+
+        Button {
+            text: "Stop Server"
+            onClicked: tcpServer.stopServer();
         }
     }
 }

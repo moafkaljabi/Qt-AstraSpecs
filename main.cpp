@@ -1,36 +1,31 @@
-#include <QCoreApplication>
-#include <QQuickView>
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QCommandLineParser>
-#include <QCommandLineOption>
 #include "network/tcpserver.h"
 
 int main(int argc, char *argv[]) {
+    QGuiApplication app(argc, argv);
 
-    QCoreApplication a(argc, argv);
-
-    // Set up command line options
     QCommandLineParser parser;
     parser.setApplicationDescription("TCP Server Example");
     parser.addHelpOption();
 
-    // Define a port option
-    QCommandLineOption portOption(QStringList() << "p" << "port", "Port to run the server on.", "port", "12345");
+    QCommandLineOption portOption({"p", "port"}, "Port to run the server on.", "port", "12345");
     parser.addOption(portOption);
-    parser.process(a);
+    parser.process(app);
 
-    // Get the port number from the command line argument (default to 12345 if not provided)
     quint16 port = parser.value(portOption).toUInt();
 
-    // Initialize the TcpServer on the specified port
-    TcpServer server(port);
+    // Register TcpServer as a QML type ✅
+    qmlRegisterType<TcpServer>("AstraSpecs", 1, 0, "TcpServer");
 
-    // Create the QML view
-    QQuickView view;
-    view.rootContext()->setContextProperty("tcpServer", &server); // Expose TcpServer instance to QML
-    view.setSource(QUrl::fromLocalFile("qml/main.qml"));
-    view.show();
+    QQmlApplicationEngine engine;
+    engine.load(QUrl::fromLocalFile(QStringLiteral("Main.qml")));
 
-    // Start the event loop
-    return a.exec();
+
+    if (engine.rootObjects().isEmpty())
+        return -1;
+
+    return app.exec();
 }

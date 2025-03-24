@@ -27,13 +27,7 @@ qt_add_qml_module(appAstraSpecs
         Main.qml
     SOURCES
         network/tcpserver.h network/tcpserver.cpp
-        network/httpserver.h network/httpserver.cpp
-        uart/uartmanager.h uart/uartmanager.cpp
-        json/jsonreceiver.h json/jsonreceiver.cpp
-        json/jsonsender.h json/jsonsender.cpp
-        controllers/tcpcontroller.h controllers/tcpcontroller.cpp
-        controllers/uartcontroller.h controllers/uartcontroller.cpp
-        controllers/jsoncontroller.h controllers/jsoncontroller.cpp
+
         QML_FILES components/TopBar/TopBar.qml
         QML_FILES components/BottomBar/BottomBar.qml
         QML_FILES components/body/body.qml

@@ -1,29 +1,31 @@
-#pragma once
+#ifndef TCPSERVER_H
+#define TCPSERVER_H
 
 #include <QTcpServer>
 #include <QTcpSocket>
-#include <memory>
 #include <vector>
+#include <memory>
 #include <mutex>
-#include <pqxx/pqxx>
+#include <QObject>
 
 class TcpServer : public QTcpServer {
-    Q_OBJECT
+    Q_OBJECT  // ✅ Required for Qt's meta-object system
+
 public:
     explicit TcpServer(quint16 port, QObject* parent = nullptr);
     ~TcpServer();
 
-    Q_INVOKABLE void startServer();  // Expose startServer method to QML
-    Q_INVOKABLE void stopServer();   // Expose stopServer method to QML
+    Q_INVOKABLE void startServer();  // ✅ Now callable from QML
+    Q_INVOKABLE void stopServer();   // ✅ Now callable from QML
 
 protected:
     void incomingConnection(qintptr socketDescriptor) override;
 
 private:
     void handleClient(std::unique_ptr<QTcpSocket> clientSocket);
-    void saveToDatabase(const QString& imuData);
 
-    std::vector<std::unique_ptr<QTcpSocket>> m_clients;
+    std::vector<QTcpSocket*> m_clients;
     std::mutex m_mutex;
-    pqxx::connection m_dbConnection;
 };
+
+#endif // TCPSERVER_H
